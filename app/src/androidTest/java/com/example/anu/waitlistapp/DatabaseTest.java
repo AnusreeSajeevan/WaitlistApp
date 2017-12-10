@@ -1,5 +1,6 @@
 package com.example.anu.waitlistapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +13,14 @@ import com.example.anu.waitlistapp.data.WaitlistDbHelper;
 
 import org.junit.Before;
 import org.junit.Assert.*;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Field;
 
 import static android.icu.text.MessagePattern.ArgType.SELECT;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -108,5 +111,63 @@ public class DatabaseTest {
         catch (Exception e){
             fail(e.getMessage());
         }
+    }
+
+    /**
+     * This method tests inserting a single record into an empty table from a brand new database.
+     * The purpose is to test that the database is working as expected
+     * @throws Exception in case the constructor hasn't been implemented yet
+     */
+    @Test
+    public void insert_single_record_test() throws Exception{
+
+        /* Use reflection to try to run the correct constructor whenever implemented */
+        SQLiteOpenHelper dbHelper =
+                (SQLiteOpenHelper) dbHelperClass.getConstructor(Context.class).newInstance(context);
+
+        /* Use WaitlistDbHelper to get access to a writable database */
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
+
+        ContentValues testValues = new ContentValues();
+        testValues.put(WaitlistContract.WaitlistEntry.KEY_COLUMN_GUEST_NAME, "test name");
+        testValues.put(WaitlistContract.WaitlistEntry.KEY_COLUMN_PARTY_SIZE, 99);
+
+        /* Insert ContentValues into database and get first row ID back */
+        long firstRowId = database.insert(
+                WaitlistContract.WaitlistEntry.KEY_TABLE_NAME,
+                null,
+                testValues);
+
+        /* If the insert fails, database.insert returns -1 */
+        assertNotEquals("Unable to insert into the database", -1, firstRowId);
+
+        /*
+         * Query the database and receive a Cursor. A Cursor is the primary way to interact with
+         * a database in Android.
+         */
+        Cursor wCursor = database.query(
+                /* Name of table on which to perform the query */
+                WaitlistContract.WaitlistEntry.KEY_TABLE_NAME,
+                /* Columns; leaving this null returns every column in the table */
+                null,
+                /* Optional specification for columns in the "where" clause above */
+                null,
+                /* Values for "where" clause */
+                null,
+                /* Columns to group by */
+                null,
+                /* Columns to filter by row groups */
+                null,
+                /* Sort order to return in Cursor */
+                null);
+
+        /* Cursor.moveToFirst will return false if there are no records returned from your query */
+        String emptyQueryError = "Error: No Records returned from waitlist query";
+        assertTrue(emptyQueryError,
+                wCursor.moveToFirst());
+
+        /* Close cursor and database */
+        wCursor.close();
+        dbHelper.close();
     }
 }
