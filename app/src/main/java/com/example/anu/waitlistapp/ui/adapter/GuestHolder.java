@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.example.anu.waitlistapp.R;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Design on 07-12-2017.
@@ -21,5 +22,6 @@ public class GuestHolder extends RecyclerView.ViewHolder {
 
     public GuestHolder(View itemView) {
         super(itemView);
+        ButterKnife.bind(this, itemView);
     }
 }
