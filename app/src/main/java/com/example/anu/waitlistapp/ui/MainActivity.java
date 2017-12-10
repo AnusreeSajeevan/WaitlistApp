@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -66,6 +67,34 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
         mDatabase = mDbHelper.getWritableDatabase();
         validator = new Validator(this);
         validator.setValidationListener(this);
+
+        /**
+         * we implement ItemTouchHelper with simple callbacks that can handle both left and right swipes
+         * we need to ovveride onMove and onSwiped methods to handle moves and swipes
+         * first argument to SimpleCallback is related to dragging
+         */
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                boolean isRemoved = removeGuest((Long) viewHolder.itemView.getTag());
+
+                if (isRemoved){
+                    /**
+                     * after removing the guest, notify the adapter
+                     */
+                    mGuestAdapter.swapCursor(getAllGuests());
+                }
+                else
+                    Toast.makeText(MainActivity.this, getResources().getString(R.string.remove_error), Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerViewGuests);
+
         stupRecyclerView();
     }
 
@@ -147,5 +176,10 @@ public class MainActivity extends AppCompatActivity implements Validator.Validat
             EditText editText = (EditText) failedView;
             editText.setError(failedRule.getFailureMessage());
         }
+    }
+
+    private boolean removeGuest(long id){
+        return mDatabase.delete(WaitlistContract.WaitlistEntry.KEY_TABLE_NAME, WaitlistContract.WaitlistEntry._ID + "=" + id,
+                null) > 0;
     }
 }

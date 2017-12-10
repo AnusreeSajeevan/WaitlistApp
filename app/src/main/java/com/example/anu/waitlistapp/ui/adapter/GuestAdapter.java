@@ -52,10 +52,35 @@ public class GuestAdapter extends RecyclerView.Adapter<GuestHolder> {
          */
         holder.txtGuestName.setText(name);
         holder.txtPartySize.setText(String.valueOf(size));
+
+        /**
+         * set tag to itemView so that we can get it to remove guest from the list
+         * tag is commonly used to save/set some values that are not actually visible to the user
+         */
+        holder.itemView.setTag(mCursor.getLong(mCursor.getColumnIndex(WaitlistContract.WaitlistEntry._ID)));
     }
 
     @Override
     public int getItemCount() {
         return mCursor.getCount();
+    }
+
+    /**
+     * swap the cursor currently held in the adapter with the new one
+     * @param newCursor that is to be updated
+     */
+    public void swapCursor(Cursor newCursor){
+        /**
+         * delete previously exist cursor
+         */
+        if (null != mCursor)
+            mCursor.close();
+
+        /**
+         * update the old cursor with the new one
+         */
+        mCursor = newCursor;
+        if (null != mCursor)
+            this.notifyDataSetChanged();
     }
 }

@@ -4,4 +4,5 @@
     <string name="party_size_hint">Enter party size</string>
     <string name="add">Add</string>
     <string name="insert_error">Guest cannot be added</string>
+    <string name="remove_error">Cannot remove guests!!!</string>
 </resources>
