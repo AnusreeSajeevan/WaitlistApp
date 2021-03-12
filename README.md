@@ -49,5 +49,5 @@ function fancyAlert(arg) {
 ```
 
 
--[X] indicator
--[] incomplete
+- [ X ] indicator
+- [ ]  incomplete
