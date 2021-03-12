@@ -61,5 +61,5 @@ task list
 tables
 column1|column2
 ----------------
-item1|item2|item3
+item1|item2
 item4|item5
