@@ -2,7 +2,10 @@
 
 - This app allow the user to add new guests to the wait lst with the party size
 - The list will get updated when new users is being added
-- Guests can be removed by swiping left or right
+- Guests can be removed by swiping left or right\
+
+
+**Learning markdown**
 
 **bold**
 *italic*
@@ -48,6 +51,15 @@ function fancyAlert(arg) {
 }
 ```
 
+task list
 
 - [ X ] indicator
 - [ ]  incomplete
+
+
+
+tables
+column1|column2
+----------------
+item1|item2|item3
+item4|item5
