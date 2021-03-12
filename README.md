@@ -68,3 +68,11 @@ item4|item5
 links
 
 www.google.com 
+
+crossed out
+~~strike~~
+
+smileys
+
+:smile: 
+
