@@ -37,3 +37,13 @@ block quotes
 
 inline code
 `fun hello()`
+
+
+
+```javascript
+function fancyAlert(arg) {
+  if(arg) {
+    $.facebox({div:'#foo'})
+  }
+}
+```
