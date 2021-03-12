@@ -34,7 +34,6 @@ unordered list
 block quotes
 > hi
 > hello
-> 
 
 inline code
-`<fun hello()>`
+`fun hello()`
