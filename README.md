@@ -11,3 +11,19 @@
 __bold__
 _italic_
 *italic and **bold***
+
+
+ordered list
+* item1
+* item2
+  * item3
+  * item4
+
+
+
+
+unordered list
+1. item 1
+2. item2
+    1. item1 
+    2. item2
